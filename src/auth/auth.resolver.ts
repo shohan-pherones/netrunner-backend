@@ -14,7 +14,7 @@ export class AuthResolver {
   }
 
   @Mutation(() => String)
-  sendOtp(@Args('data') data: SendOtpInput): string {
+  async sendOtp(@Args('data') data: SendOtpInput): Promise<string> {
     return this.authService.sendOtp(data);
   }
 

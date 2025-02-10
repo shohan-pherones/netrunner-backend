@@ -5,6 +5,7 @@ import { SendOtpInput } from './dto/send-otp.input';
 import * as bcrypt from 'bcrypt';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { Auth } from './entities/auth.entity';
+import { EmailService } from 'src/email/email.service';
 
 const otpStore: Record<string, { otp: string; expiresAt: number }> = {};
 
@@ -13,14 +14,17 @@ export class AuthService {
   constructor(
     private prisma: PrismaService,
     private jwtService: JwtService,
+    private emailService: EmailService,
   ) {}
 
-  sendOtp(data: SendOtpInput): string {
+  async sendOtp(data: SendOtpInput): Promise<string> {
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
     const expiresAt = Date.now() + 5 * 60 * 1000;
 
     otpStore[data.email] = { otp, expiresAt };
     console.log(`OTP for ${data.email}: ${otp}`);
+
+    await this.emailService.sendOtpEmail(data.email, otp);
 
     return 'OTP sent successfully.';
   }
