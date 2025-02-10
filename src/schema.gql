@@ -1,0 +1,34 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Auth {
+  token: String!
+}
+
+type Query {
+  hello: String!
+}
+
+type Mutation {
+  sendOtp(data: SendOtpInput!): String!
+  verifyOtpAndSignUp(data: VerifyOtpAndSignUpInput!): Auth!
+}
+
+input SendOtpInput {
+  email: String!
+}
+
+input VerifyOtpAndSignUpInput {
+  username: String!
+  email: String!
+  password: String!
+  role: Role! = USER
+  otp: String!
+}
+
+"""User roles (USER or ADMIN)"""
+enum Role {
+  USER
+  ADMIN
+}
