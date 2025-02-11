@@ -13,6 +13,7 @@ type Query {
 type Mutation {
   sendOtp(data: SendOtpInput!): String!
   verifyOtpAndSignUp(data: VerifyOtpAndSignUpInput!): Auth!
+  signIn(data: SignInInput!): Auth!
 }
 
 input SendOtpInput {
@@ -31,4 +32,9 @@ input VerifyOtpAndSignUpInput {
 enum Role {
   USER
   ADMIN
+}
+
+input SignInInput {
+  identifier: String!
+  password: String!
 }
