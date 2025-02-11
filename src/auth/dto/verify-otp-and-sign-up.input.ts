@@ -1,6 +1,6 @@
-import { InputType, Field } from '@nestjs/graphql';
-import { SignUpInput } from './sign-up.input';
+import { Field, InputType } from '@nestjs/graphql';
 import { IsNotEmpty, Length } from 'class-validator';
+import { SignUpInput } from './sign-up.input';
 
 @InputType()
 export class VerifyOtpAndSignUpInput extends SignUpInput {

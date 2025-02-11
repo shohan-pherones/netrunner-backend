@@ -1,11 +1,11 @@
-import { Injectable, BadRequestException } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { VerifyOtpAndSignUpInput } from './dto/verify-otp-and-sign-up.input';
-import { SendOtpInput } from './dto/send-otp.input';
 import * as bcrypt from 'bcrypt';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { EmailService } from '../email/email.service';
+import { PrismaService } from '../prisma/prisma.service';
+import { SendOtpInput } from './dto/send-otp.input';
+import { VerifyOtpAndSignUpInput } from './dto/verify-otp-and-sign-up.input';
 import { Auth } from './entities/auth.entity';
-import { EmailService } from 'src/email/email.service';
 
 const otpStore: Record<string, { otp: string; expiresAt: number }> = {};
 

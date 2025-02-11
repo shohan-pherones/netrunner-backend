@@ -1,4 +1,4 @@
-import { Resolver, Mutation, Args, Query } from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { AuthService } from './auth.service';
 import { SendOtpInput } from './dto/send-otp.input';
 import { VerifyOtpAndSignUpInput } from './dto/verify-otp-and-sign-up.input';

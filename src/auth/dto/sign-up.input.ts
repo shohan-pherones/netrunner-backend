@@ -1,10 +1,10 @@
-import { InputType, Field } from '@nestjs/graphql';
+import { Field, InputType } from '@nestjs/graphql';
 import {
   IsEmail,
-  IsNotEmpty,
-  MinLength,
-  Matches,
   IsEnum,
+  IsNotEmpty,
+  Matches,
+  MinLength,
 } from 'class-validator';
 import { Role } from '../enums/role.enum';
 

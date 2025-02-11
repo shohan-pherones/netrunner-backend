@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import * as nodemailer from 'nodemailer';
-import { SentMessageInfo, Options } from 'nodemailer/lib/smtp-transport';
+import { Options, SentMessageInfo } from 'nodemailer/lib/smtp-transport';
 
 @Injectable()
 export class EmailService {
