@@ -14,6 +14,8 @@ type Mutation {
   sendOtp(data: SendOtpInput!): String!
   verifyOtpAndSignUp(data: VerifyOtpAndSignUpInput!): Auth!
   signIn(data: SignInInput!): Auth!
+  requestPasswordReset(email: String!): String!
+  resetPassword(token: String!, newPassword: String!): String!
 }
 
 input SendOtpInput {

@@ -30,4 +30,17 @@ export class AuthResolver {
   async signIn(@Args('data') data: SignInInput): Promise<Auth> {
     return this.authService.signIn(data);
   }
+
+  @Mutation(() => String)
+  async requestPasswordReset(@Args('email') email: string): Promise<string> {
+    return this.authService.requestPasswordReset(email);
+  }
+
+  @Mutation(() => String)
+  async resetPassword(
+    @Args('token') token: string,
+    @Args('newPassword') newPassword: string,
+  ): Promise<string> {
+    return this.authService.resetPassword(token, newPassword);
+  }
 }

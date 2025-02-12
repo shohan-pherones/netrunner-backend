@@ -13,6 +13,8 @@ import { VerifyOtpAndSignUpInput } from './dto/verify-otp-and-sign-up.input';
 import { Auth } from './entities/auth.entity';
 
 const otpStore: Record<string, { otp: string; expiresAt: number }> = {};
+const resetTokenStore: Record<string, { token: string; expiresAt: number }> =
+  {};
 
 @Injectable()
 export class AuthService {
@@ -91,5 +93,58 @@ export class AuthService {
     const token = this.jwtService.sign({ userId: user.id });
 
     return { token };
+  }
+
+  async requestPasswordReset(email: string): Promise<string> {
+    const user = await this.prisma.user.findUnique({ where: { email } });
+
+    if (!user) {
+      throw new BadRequestException('User not found');
+    }
+
+    const resetToken = this.jwtService.sign(
+      { userId: user.id },
+      { expiresIn: '15m' },
+    );
+
+    console.log(resetToken);
+
+    const resetLink = `${process.env.FRONTEND_URL}/reset-password?token=${resetToken}`;
+
+    resetTokenStore[email] = {
+      token: resetToken,
+      expiresAt: Date.now() + 15 * 60 * 1000,
+    };
+
+    await this.emailService.sendPasswordResetEmail(email, resetLink);
+
+    return 'Password reset link sent successfully.';
+  }
+
+  async resetPassword(token: string, newPassword: string): Promise<string> {
+    let userId: string;
+
+    try {
+      const payload = this.jwtService.verify(token);
+      userId = payload.userId;
+    } catch (error) {
+      console.log(error);
+      throw new BadRequestException('Invalid or expired token');
+    }
+
+    const user = await this.prisma.user.findUnique({ where: { id: userId } });
+
+    if (!user) {
+      throw new BadRequestException('User not found');
+    }
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    await this.prisma.user.update({
+      where: { id: userId },
+      data: { password: hashedPassword },
+    });
+
+    return 'Password reset successfully.';
   }
 }

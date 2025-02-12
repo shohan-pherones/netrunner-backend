@@ -29,4 +29,18 @@ export class EmailService {
 
     await this.transporter.sendMail(mailOptions);
   }
+
+  async sendPasswordResetEmail(
+    email: string,
+    resetLink: string,
+  ): Promise<void> {
+    const mailOptions = {
+      from: `"Netrunner" <${process.env.EMAIL_USER}>`,
+      to: email,
+      subject: 'Password Reset Request',
+      text: `You requested to reset your password. Please click on the following link to reset your password: ${resetLink}. This link will expire in 15 minutes.`,
+    };
+
+    await this.transporter.sendMail(mailOptions);
+  }
 }
