@@ -12,7 +12,8 @@ type Query {
 
 type Mutation {
   sendOtp(data: SendOtpInput!): String!
-  verifyOtpAndSignUp(data: VerifyOtpAndSignUpInput!): Auth!
+  verifyOtp(data: VerifyOtpInput!): Auth!
+  signUp(data: SignUpInput!): Auth!
   signIn(data: SignInInput!): Auth!
   requestPasswordReset(email: String!): String!
   resetPassword(token: String!, newPassword: String!): String!
@@ -22,12 +23,16 @@ input SendOtpInput {
   email: String!
 }
 
-input VerifyOtpAndSignUpInput {
+input VerifyOtpInput {
+  otp: String!
+  email: String!
+}
+
+input SignUpInput {
   username: String!
   email: String!
   password: String!
   role: Role! = USER
-  otp: String!
 }
 
 """User roles (USER or ADMIN)"""

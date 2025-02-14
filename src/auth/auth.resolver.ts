@@ -2,7 +2,8 @@ import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { AuthService } from './auth.service';
 import { SendOtpInput } from './dto/send-otp.input';
 import { SignInInput } from './dto/sign-in.input';
-import { VerifyOtpAndSignUpInput } from './dto/verify-otp-and-sign-up.input';
+import { SignUpInput } from './dto/sign-up.input';
+import { VerifyOtpInput } from './dto/verify-otp.input';
 import { Auth } from './entities/auth.entity';
 
 @Resolver()
@@ -20,10 +21,13 @@ export class AuthResolver {
   }
 
   @Mutation(() => Auth)
-  async verifyOtpAndSignUp(
-    @Args('data') data: VerifyOtpAndSignUpInput,
-  ): Promise<Auth> {
-    return this.authService.verifyOtpAndSignUp(data);
+  verifyOtp(@Args('data') data: VerifyOtpInput): string {
+    return this.authService.verifyOtp(data);
+  }
+
+  @Mutation(() => Auth)
+  async signUp(@Args('data') data: SignUpInput): Promise<Auth> {
+    return this.authService.signUp(data);
   }
 
   @Mutation(() => Auth)

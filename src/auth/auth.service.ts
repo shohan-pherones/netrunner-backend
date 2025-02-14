@@ -9,7 +9,8 @@ import { EmailService } from '../email/email.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { SendOtpInput } from './dto/send-otp.input';
 import { SignInInput } from './dto/sign-in.input';
-import { VerifyOtpAndSignUpInput } from './dto/verify-otp-and-sign-up.input';
+import { SignUpInput } from './dto/sign-up.input';
+import { VerifyOtpInput } from './dto/verify-otp.input';
 import { Auth } from './entities/auth.entity';
 
 const otpStore: Record<string, { otp: string; expiresAt: number }> = {};
@@ -36,7 +37,7 @@ export class AuthService {
     return 'OTP sent successfully.';
   }
 
-  async verifyOtpAndSignUp(data: VerifyOtpAndSignUpInput): Promise<Auth> {
+  verifyOtp(data: VerifyOtpInput): string {
     const otpRecord = otpStore[data.email];
 
     if (
@@ -48,10 +49,14 @@ export class AuthService {
     }
 
     delete otpStore[data.email];
+    return 'OTP verified successfully.';
+  }
 
+  async signUp(data: SignUpInput): Promise<Auth> {
     const existingUser = await this.prisma.user.findUnique({
       where: { email: data.email },
     });
+
     if (existingUser) {
       throw new BadRequestException('User already exists');
     }
