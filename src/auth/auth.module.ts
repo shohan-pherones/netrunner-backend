@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
-import { JwtModule, JwtService } from '@nestjs/jwt';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { JwtModule } from '@nestjs/jwt';
 import { EmailService } from '../email/email.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { AuthResolver } from './auth.resolver';
@@ -7,18 +8,18 @@ import { AuthService } from './auth.service';
 
 @Module({
   imports: [
-    JwtModule.register({
-      secret: process.env.JWT_SECRET,
-      signOptions: { expiresIn: '7d' },
+    JwtModule.registerAsync({
+      imports: [ConfigModule],
+      useFactory: (configService: ConfigService) => ({
+        secret: configService.get<string>('JWT_SECRET'),
+        signOptions: {
+          expiresIn: configService.get<string>('JWT_EXPIRES_IN'),
+        },
+      }),
+      inject: [ConfigService],
     }),
   ],
-  providers: [
-    AuthService,
-    AuthResolver,
-    PrismaService,
-    EmailService,
-    JwtService,
-  ],
-  exports: [JwtService],
+  providers: [AuthService, AuthResolver, PrismaService, EmailService],
+  exports: [JwtModule],
 })
 export class AuthModule {}

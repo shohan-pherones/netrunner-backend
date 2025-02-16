@@ -22,6 +22,7 @@ export class ProfileService {
     const profile = await this.prisma.profile.create({
       data: {
         ...data,
+        dateOfBirth: new Date(data.dateOfBirth),
         userId,
       },
       include: {
