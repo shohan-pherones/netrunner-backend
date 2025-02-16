@@ -6,8 +6,52 @@ type Auth {
   token: String!
 }
 
+type User {
+  id: ID!
+  username: String!
+  email: String!
+  password: String!
+  role: Role!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Profile {
+  id: ID!
+  firstName: String!
+  lastName: String!
+  nickName: String
+  coverPhoto: String
+  profilePhoto: String
+  bio: String
+  sex: Sex!
+  dateOfBirth: DateTime!
+  website: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  user: User!
+  userId: String!
+}
+
+enum Sex {
+  MALE
+  FEMALE
+  OTHER
+}
+
 type Query {
   hello: String!
+  getMyProfile: Profile!
 }
 
 type Mutation {
@@ -17,6 +61,7 @@ type Mutation {
   signIn(data: SignInInput!): Auth!
   requestPasswordReset(email: String!): String!
   resetPassword(token: String!, newPassword: String!): String!
+  createProfile(createProfileInput: CreateProfileInput!): Profile!
 }
 
 input SendOtpInput {
@@ -35,13 +80,19 @@ input SignUpInput {
   role: Role! = USER
 }
 
-"""User roles (USER or ADMIN)"""
-enum Role {
-  USER
-  ADMIN
-}
-
 input SignInInput {
   identifier: String!
   password: String!
+}
+
+input CreateProfileInput {
+  firstName: String!
+  lastName: String!
+  nickName: String
+  coverPhoto: String
+  profilePhoto: String
+  bio: String
+  sex: Sex!
+  dateOfBirth: String!
+  website: String
 }
