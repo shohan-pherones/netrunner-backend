@@ -7,6 +7,7 @@ type Auth {
 }
 
 input CreateProfileInput {
+  address: String
   bio: String
   coverPhoto: String
   dateOfBirth: String!
@@ -34,6 +35,7 @@ type Mutation {
 }
 
 type Profile {
+  address: String
   bio: String
   coverPhoto: String
   createdAt: DateTime!

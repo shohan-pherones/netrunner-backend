@@ -38,6 +38,9 @@ export class Profile {
   @Field({ nullable: true })
   website?: string;
 
+  @Field({ nullable: true })
+  address?: string;
+
   @Field()
   createdAt: Date;
 

@@ -53,4 +53,9 @@ export class CreateProfileInput {
   @IsOptional()
   @IsUrl({}, { message: 'Website must be a valid URL' })
   website?: string;
+
+  @Field({ nullable: true })
+  @IsOptional()
+  @IsString({ message: 'Address must be a string' })
+  address?: string;
 }
